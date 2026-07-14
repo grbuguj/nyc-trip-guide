@@ -178,6 +178,20 @@
   }
   .meal .m-b{font-weight:500;}
 
+  .route-btn{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    width:100%; margin:18px 0 8px; padding:14px;
+    background:var(--navy); color:var(--card-yellow);
+    border-radius:12px; text-decoration:none;
+    font-weight:800; font-size:13.5px; letter-spacing:.3px;
+    border:2px solid var(--navy);
+  }
+  .route-btn:active{background:var(--card-yellow); color:var(--navy);}
+  .route-btn .n{
+    background:var(--card-yellow); color:var(--navy); border-radius:6px;
+    font-family:'Archivo Black',sans-serif; font-size:11px; padding:2px 6px;
+  }
+
   /* ── INFO PANEL ── */
   .icard{
     background:var(--white); border:1.5px solid var(--line); border-radius:var(--radius);
@@ -453,6 +467,16 @@ const INFO = `
 const nav = document.getElementById('daynav');
 const panels = document.getElementById('panels');
 const mapUrl = q => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+const routeUrl = stops => {
+  const places = stops.map(s => s.map);
+  if(places.length < 2) return mapUrl(places[0]);
+  const origin = encodeURIComponent(places[0]);
+  const destination = encodeURIComponent(places[places.length-1]);
+  const mid = places.slice(1, -1).map(encodeURIComponent).join('|');
+  let url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=transit`;
+  if(mid) url += `&waypoints=${mid}`;
+  return url;
+};
 
 DAYS.forEach((day, i) => {
   const btn = document.createElement('button');
@@ -493,12 +517,18 @@ DAYS.forEach((day, i) => {
       ${day.meals.map(m=>`<div class="meal"><div class="m-l">${m.l}</div><div class="m-b">${m.b}</div></div>`).join('')}
     </div>` : '';
 
+  const routeHtml = day.stops.length > 1 ? `
+    <a class="route-btn" href="${routeUrl(day.stops)}" target="_blank">
+      <span class="n">${day.stops.length}곳</span> 오늘 동선 전체보기 (구글맵) →
+    </a>` : '';
+
   p.innerHTML = `
     <div class="day-banner"><span class="big">${day.title}</span></div>
     <div class="day-banner"><span class="date">${day.date}</span></div>
     <p class="day-note">${day.note}</p>
     ${stopsHtml}
     ${mealsHtml}
+    ${routeHtml}
   `;
   panels.appendChild(p);
 });

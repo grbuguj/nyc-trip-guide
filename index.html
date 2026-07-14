@@ -237,7 +237,7 @@ const DAYS = [
     stops:[
       {t:'10:00', title:'배터리파크 → 자유의여신상 페리', desc:'CityPASS에 포함된 공식 페리(Statue City Cruises). 리버티섬+엘리스아일랜드까지 3시간 코스. 여신상 배경 인생샷 필수 📸', map:'Statue of Liberty Ferry Battery Park', img:'자유의 여신상', tags:['CityPASS','필수','예약시간 엄수']},
       {t:'13:30', title:'스톤 스트리트에서 점심', desc:'자갈길 골목에 노천 테이블 쫙 깔린 로어맨해튼 명물 거리.', map:'Stone Street New York', img:'뉴욕 스톤 스트리트', tags:['점심']},
-      {t:'15:00', title:'9/11 메모리얼 & NYSE 외관 & 황소상', desc:'전부 숙소 도보권. 뉴욕증권거래소는 내부 투어 불가 — 컬럼 파사드 앞 인증샷! 월드컵 기간 보안구역이라 체크포인트 있을 수 있음.', map:'New York Stock Exchange Wall Street', img:'뉴욕 증권거래소', tags:['도보권','포토스팟']},
+      {t:'15:30', title:'9/11 메모리얼 & NYSE 외관 & 황소상', desc:'전부 숙소 도보권. 뉴욕증권거래소는 내부 투어 불가 — 컬럼 파사드 앞 인증샷! 월드컵 기간 보안구역이라 체크포인트 있을 수 있음.', map:'New York Stock Exchange Wall Street', img:'뉴욕 증권거래소', tags:['도보권','포토스팟']},
       {t:'18:00', title:'브루클린브리지 도보 횡단', desc:'맨해튼 진입로가 숙소 근처. 걸어서 40분, 해질녘 타이밍이 최고.', map:'Brooklyn Bridge', img:'브루클린 브릿지', tags:['필수','석양']},
       {t:'19:30', title:'DUMBO 석양 + 저녁', desc:'맨해튼브리지 프레임 샷 명소. Juliana\'s 피자 or Time Out Market 옥상.', map:'DUMBO Brooklyn', img:'덤보 브루클린', tags:['야경','피자']}
     ],
@@ -250,14 +250,16 @@ const DAYS = [
   {
     id:'d2', d:'D2', w:'7/17 금',
     title:'미드타운 랜드마크 데이', date:'7/17 (금)',
-    note:'MoMA 금요 무료(16시~)가 요일 고정이라 이날은 미드타운 몰빵. 전망대는 <b>엠파이어스테이트 하나만</b> — 하루 2개는 줄서기 낭비라 뺐어.',
+    note:'MoMA 금요 무료(16시~)가 요일 고정이라 이날은 미드타운 몰빵. <b>전망대 3연타(엠파이어스테이트 낮→탑오브더록 노을→엠파이어스테이트 밤)</b>라 타이트한 편 — 컨디션 봐서 밤 재입장이나 탑오브더록 중 하나는 스킵해도 무방.',
     stops:[
       {t:'09:30', title:'그랜드센트럴 터미널', desc:'천장 별자리 벽화가 있는 뉴욕 대표 기차역. 지하 푸드코트도 볼거리.', map:'Grand Central Terminal', img:'그랜드 센트럴 터미널', tags:['필수','건축']},
-      {t:'11:00', title:'엠파이어스테이트 빌딩', desc:'86층 전망대. CityPASS의 AM/PM 티켓이라 밤에 한 번 더 무료 재입장 가능! 시간대 예약 필수.', map:'Empire State Building', img:'엠파이어 스테이트 빌딩', tags:['CityPASS','전망대','예약']},
+      {t:'11:00', title:'엠파이어스테이트 빌딩 (낮)', desc:'86층 전망대. CityPASS AM/PM 티켓이라 오늘 밤 무료 재입장 가능 — 예약 없이 티켓만 스캔하면 됨.', map:'Empire State Building', img:'엠파이어 스테이트 빌딩', tags:['CityPASS','전망대','예약']},
       {t:'13:00', title:'The Halal Guys 점심', desc:'53rd&6th 본점, 치킨오버라이스 $12. 뉴욕 푸드트럭의 전설.', map:'The Halal Guys 53rd Street', img:'할랄가이즈 뉴욕', tags:['점심','$12']},
       {t:'14:30', title:'5번가 & 브라이언트파크', desc:'명품 플래그십 윈도쇼핑 → 도서관 뒤 잔디밭에서 커피 한 잔 쉬어가기.', map:'Bryant Park', img:'브라이언트 파크', tags:['산책']},
       {t:'15:30', title:'MoMA 금요 무료입장 줄서기', desc:'16시 오픈인데 줄이 밖까지 늘어서니 30분 전엔 도착. 고흐 별이 빛나는 밤, 피카소 다 있음.', map:'Museum of Modern Art', img:'뉴욕 현대미술관 모마', tags:['무료','금요한정']},
-      {t:'19:00', title:'타임스퀘어 & 뮤지컬', desc:'전광판 바다는 밤이 제맛. TodayTix 로터리 당첨되면 브로드웨이 $30~50에 관람 🎭', map:'Times Square', img:'타임스퀘어 뉴욕', tags:['필수','야경','로터리']}
+      {t:'19:00', title:'탑 오브 더 록 (노을 타이밍)', desc:'7월 일몰이 20:15경이라 이 시간에 올라가면 엠파이어스테이트가 스카이라인에 딱 박힌 뷰. CityPASS 선택3 항목.', map:'Top of the Rock', img:'탑오브더록 전망대', tags:['CityPASS','노을','전망대']},
+      {t:'21:00', title:'타임스퀘어 근처 저녁', desc:'전광판 바다 구경하면서 근처에서 저녁 해결. 뮤지컬은 이번엔 패스.', map:'Times Square', img:'타임스퀘어 뉴욕', tags:['야경']},
+      {t:'22:00', title:'엠파이어스테이트 빌딩 (밤 재입장)', desc:'CityPASS AM/PM 무료 재입장 — 예약 불필요, 티켓만 보여주면 바로 입장. 야경 버전으로 한 번 더!', map:'Empire State Building', img:'엠파이어 스테이트 빌딩 야경', tags:['CityPASS','야경','무료재입장']}
     ],
     meals:[
       {l:'아침', b:'길거리 베이글카트 ($5) / Levain Bakery 쿠키+커피 ($8)'},
@@ -409,25 +411,23 @@ const INFO = `
     <h3>🎫 예약 체크리스트</h3>
     <ul>
       <li><b>CityPASS ($164)</b> — <a href="https://www.citypass.com/new-york" target="_blank">citypass.com/new-york</a><br>엠파이어스테이트+자연사박물관 고정, 선택3에 자유의여신상 페리 포함시키기. 페리는 앱에서 시간대 예약 필수!</li>
-      <li><b>양키스 7/21 ($28~)</b> — <a href="https://seatgeek.com/new-york-yankees-tickets" target="_blank">SeatGeek</a> / <a href="https://www.mlb.com/yankees/tickets" target="_blank">공식</a></li>
-      <li><b>나이아가라 7/20 투어</b> — <a href="https://www.viator.com" target="_blank">Viator</a>에서 "Niagara day trip by air" 검색 (환불정책 확인!)</li>
-      <li><b>TodayTix</b> — 뮤지컬 당일 로터리 앱, 미리 설치+로그인</li>
+      <li><b>양키스 7/21 ($28~)</b> — <a href="https://seatgeek.com/new-york-yankees-tickets" target="_blank">SeatGeek</a> / <a href="https://www.mlb.com/yankees/tickets" target="_blank">공식</a> — 예약완료 ✅</li>
+      <li><b>나이아가라 7/20 투어</b> — 줌줌투어 예약완료 ✅ (예약번호 605523)</li>
+      <li><b>탑 오브 더 록</b> — CityPASS 선택3 항목, 7/17 19:00 시간대 예약</li>
       <li><b>Citi Bike</b> — <a href="https://citibikenyc.com" target="_blank">앱 설치</a>, D3 당일 데이패스 (~$22)</li>
     </ul>
   </div>
   <div class="icard">
     <h3>💰 예상 비용 (현지 지출)</h3>
     <table class="btable">
-      <tr><td>CityPASS</td><td>약 23만원</td></tr>
       <tr><td>7일 지하철 무제한권</td><td>약 5만원</td></tr>
-      <tr><td>양키스 티켓 (화요일)</td><td>약 4만원</td></tr>
+      <tr><td>양키스 티켓 (2인 엔빵 몫)</td><td>약 5.7만원</td></tr>
       <tr><td>Citi Bike 데이패스</td><td>약 3만원</td></tr>
-      <tr><td>브로드웨이 로터리</td><td>약 5만원</td></tr>
-      <tr><td>나이아가라 (항공+투어)</td><td>약 40~55만원</td></tr>
+      <tr><td>나이아가라+CityPASS (2인 엔빵 몫)</td><td>약 67.5만원</td></tr>
       <tr><td>식비 (9만원 × 8일)</td><td>약 72만원</td></tr>
       <tr><td>쇼핑 (소호 등)</td><td>15만원</td></tr>
-      <tr><td>예비비</td><td>5만원</td></tr>
-      <tr class="tt"><td>합계</td><td>약 172~187만원</td></tr>
+      <tr><td>예비비</td><td>10만원</td></tr>
+      <tr class="tt"><td>합계</td><td>약 178만원</td></tr>
     </table>
   </div>
   <div class="icard">

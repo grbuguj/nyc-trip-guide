@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>형아 뉴욕 7박8일 — Final</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --card-yellow:#F5B70A;   /* MetroCard yellow */
+    --navy:#12234B;          /* MetroCard navy */
+    --ink:#17181C;
+    --paper:#F6F4EE;
+    --white:#FFFFFF;
+    --line:#E3DFD4;
+    --sub:#6E6B62;
+    --red:#D6402B;           /* subway red accent */
+    --green:#128A4A;
+    --radius:16px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Archivo',sans-serif;
+    padding-bottom:80px;
+  }
+
+  /* ── HERO : MetroCard ── */
+  .hero{
+    margin:16px;
+    background:var(--card-yellow);
+    border-radius:20px;
+    padding:26px 22px 22px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(18,35,75,.18);
+  }
+  .hero::after{
+    content:'';
+    position:absolute; right:0; top:0; bottom:0; width:20px;
+    background:var(--ink);
+  }
+  .hero-top{
+    display:flex; justify-content:space-between; align-items:flex-start; padding-right:24px;
+  }
+  .hero-eyebrow{
+    font-size:11px; font-weight:800; letter-spacing:2.5px; color:var(--navy);
+  }
+  .hero h1{
+    font-family:'Archivo Black',sans-serif;
+    font-size:40px; line-height:.98; color:var(--navy);
+    margin-top:10px; letter-spacing:-1px;
+    padding-right:24px;
+  }
+  .hero-sub{
+    margin-top:12px; font-size:13px; font-weight:600; color:var(--navy);
+    opacity:.85; line-height:1.6; padding-right:24px;
+  }
+  .hero-row{
+    display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; padding-right:24px;
+  }
+  .hero-chip{
+    background:var(--navy); color:var(--card-yellow);
+    font-size:11px; font-weight:700; letter-spacing:.5px;
+    padding:6px 12px; border-radius:6px;
+  }
+
+  /* ── DAY NAV ── */
+  .daynav{
+    display:flex; gap:8px; overflow-x:auto; padding:8px 16px 12px;
+    position:sticky; top:0; z-index:30;
+    background:linear-gradient(var(--paper) 85%, transparent);
+    -webkit-overflow-scrolling:touch;
+  }
+  .daynav::-webkit-scrollbar{display:none;}
+  .dn-btn{
+    flex-shrink:0; border:2px solid var(--ink); background:var(--white);
+    border-radius:10px; padding:8px 12px; cursor:pointer;
+    font-family:'Archivo',sans-serif; text-align:left; min-width:76px;
+    transition:transform .12s, background .12s;
+  }
+  .dn-btn .d{font-family:'Archivo Black',sans-serif; font-size:16px; line-height:1;}
+  .dn-btn .w{font-size:10px; font-weight:700; color:var(--sub); margin-top:3px; letter-spacing:.5px;}
+  .dn-btn.active{background:var(--navy); border-color:var(--navy);}
+  .dn-btn.active .d{color:var(--card-yellow);}
+  .dn-btn.active .w{color:#B9C4DE;}
+  .dn-btn:active{transform:scale(.96);}
+
+  /* ── PANELS ── */
+  .panel{display:none; padding:8px 16px 0; max-width:680px; margin:0 auto;}
+  .panel.active{display:block; animation:up .35s ease;}
+  @keyframes up{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+  .day-banner{
+    display:flex; align-items:baseline; gap:10px; margin:10px 2px 4px;
+  }
+  .day-banner .big{
+    font-family:'Archivo Black',sans-serif; font-size:30px; color:var(--navy); letter-spacing:-.5px;
+  }
+  .day-banner .date{font-size:12px; font-weight:700; color:var(--sub); letter-spacing:1px;}
+  .day-note{
+    margin:8px 2px 16px; font-size:12.5px; line-height:1.65; color:var(--sub); font-weight:500;
+  }
+  .day-note b{color:var(--red);}
+
+  /* ── STOP CARD ── */
+  .stop{
+    background:var(--white);
+    border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    margin-bottom:14px;
+    box-shadow:0 2px 8px rgba(23,24,28,.05);
+  }
+  .strip{
+    display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px;
+    height:104px; background:var(--line);
+  }
+  .slot{position:relative; overflow:hidden; background:#ECE9E0;}
+  .slot::before{
+    content:''; position:absolute; inset:0;
+    background:repeating-linear-gradient(45deg,#ECE9E0 0 8px,#E4E1D6 8px 16px);
+  }
+  .slot img{
+    width:100%; height:104px; object-fit:cover; display:block;
+    position:relative; z-index:1; opacity:0; transition:opacity .45s ease;
+  }
+  .slot img.on{opacity:1;}
+  .stop-body{padding:13px 15px 15px;}
+  .stop-head{display:flex; align-items:center; gap:9px;}
+  .t-chip{
+    flex-shrink:0;
+    font-family:'Archivo Black',sans-serif;
+    font-size:12px; letter-spacing:.5px;
+    background:var(--card-yellow); color:var(--navy);
+    padding:4px 9px; border-radius:6px;
+    border:1.5px solid var(--navy);
+  }
+  .t-chip.hot{background:var(--red); color:#fff; border-color:var(--red);}
+  .stop-title{font-size:16.5px; font-weight:800; letter-spacing:-.2px;}
+  .stop-desc{
+    margin-top:7px; font-size:13px; line-height:1.65; color:#3E3D38; font-weight:500;
+  }
+  .stop-foot{
+    display:flex; align-items:center; justify-content:space-between; margin-top:11px;
+  }
+  .tags{display:flex; gap:5px; flex-wrap:wrap;}
+  .tag{
+    font-size:10.5px; font-weight:700; color:var(--sub);
+    border:1px solid var(--line); padding:3px 8px; border-radius:20px; background:var(--paper);
+  }
+  .maplink{
+    flex-shrink:0;
+    font-size:12px; font-weight:800; color:var(--navy);
+    text-decoration:none; display:inline-flex; align-items:center; gap:4px;
+    border-bottom:2px solid var(--card-yellow); padding-bottom:1px;
+  }
+
+  /* ── MEALS ── */
+  .meals{
+    background:var(--navy); border-radius:var(--radius);
+    padding:16px; margin:20px 0 8px; color:#EAEEF7;
+  }
+  .meals h4{
+    font-family:'Archivo Black',sans-serif; font-size:13px; letter-spacing:2px;
+    color:var(--card-yellow); margin-bottom:12px;
+  }
+  .meal{
+    display:flex; gap:10px; padding:9px 0; border-top:1px solid rgba(255,255,255,.12);
+    font-size:12.5px; line-height:1.6;
+  }
+  .meal:first-of-type{border-top:none; padding-top:0;}
+  .meal .m-l{
+    flex-shrink:0; width:38px; font-weight:800; color:var(--card-yellow); font-size:12px;
+  }
+  .meal .m-b{font-weight:500;}
+
+  /* ── INFO PANEL ── */
+  .icard{
+    background:var(--white); border:1.5px solid var(--line); border-radius:var(--radius);
+    padding:16px; margin-bottom:14px;
+  }
+  .icard h3{
+    font-family:'Archivo Black',sans-serif; font-size:14px; color:var(--navy);
+    margin-bottom:10px; letter-spacing:.5px;
+  }
+  .icard ul{padding-left:18px;}
+  .icard li{font-size:13px; line-height:1.9; color:#3E3D38; font-weight:500;}
+  .icard li b{color:var(--ink);}
+  .icard a{color:var(--navy); font-weight:700; text-decoration:none; border-bottom:2px solid var(--card-yellow);}
+  .btable{width:100%; border-collapse:collapse; font-size:13px;}
+  .btable td{padding:8px 4px; border-bottom:1px solid var(--line); color:#3E3D38; font-weight:500;}
+  .btable td:last-child{text-align:right; font-weight:800; color:var(--ink);}
+  .btable tr.tt td{border-bottom:none; border-top:2.5px solid var(--navy); color:var(--navy); font-weight:900;}
+
+  footer{text-align:center; padding:26px 16px 0; font-size:11px; color:#A7A398; font-weight:600;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-eyebrow">JUL 15 – 23 · 2026 · WITH 성욱</div>
+  </div>
+  <h1>NEW YORK<br>7박 8일</h1>
+  <p class="hero-sub">자유의여신상 → 월드컵 결승 → 나이아가라 → 양키스 직관<br>베이스: 유로스타 월스트리트 (FiDi)</p>
+  <div class="hero-row">
+    <span class="hero-chip">🏆 월드컵 결승 7/19</span>
+    <span class="hero-chip">⚾ 양키스 7/21</span>
+    <span class="hero-chip">🌊 나이아가라 7/20</span>
+  </div>
+</div>
+
+<nav class="daynav" id="daynav"></nav>
+<main id="panels"></main>
+
+<footer>지도 버튼 → Google Maps · 이미지는 열 때 자동 로드</footer>
+
+<script>
+const DAYS = [
+  {
+    id:'d0', d:'D0', w:'7/15 수',
+    title:'도착', date:'7/15 (수) — JFK 밤 도착',
+    note:'긴 비행 끝! 오늘은 이동+취침만. 내일부터 풀가동이니까 무리 금지.',
+    stops:[
+      {t:'23:00', title:'JFK 공항 도착', desc:'에어트레인+지하철(약 $11)로 월스트리트까지 약 1시간. 심야라 우버도 옵션(약 $70~90).', map:'JFK Airport', img:'뉴욕 JFK 공항', tags:['이동']},
+      {t:'00:30', title:'유로스타 월스트리트 체크인', desc:'짐 풀고 바로 취침. 내일 페리 예약 시간 놓치지 않게 알람!', map:'Eurostars Wall Street New York', img:'뉴욕 월스트리트 야경', tags:['숙소']}
+    ]
+  },
+  {
+    id:'d1', d:'D1', w:'7/16 목',
+    title:'자유의여신상 & 로어맨해튼', date:'7/16 (목)',
+    note:'시차 첫날이라 <b>오전 10시 여유 출발</b>. 숙소 도보권 코스라 이동 부담 제로. 자유의여신상 페리는 보안검색이 공항급이니 예약 시간 30분 전 도착!',
+    stops:[
+      {t:'10:00', title:'배터리파크 → 자유의여신상 페리', desc:'CityPASS에 포함된 공식 페리(Statue City Cruises). 리버티섬+엘리스아일랜드까지 3시간 코스. 여신상 배경 인생샷 필수 📸', map:'Statue of Liberty Ferry Battery Park', img:'자유의 여신상', tags:['CityPASS','필수','예약시간 엄수']},
+      {t:'13:30', title:'스톤 스트리트에서 점심', desc:'자갈길 골목에 노천 테이블 쫙 깔린 로어맨해튼 명물 거리.', map:'Stone Street New York', img:'뉴욕 스톤 스트리트', tags:['점심']},
+      {t:'15:00', title:'9/11 메모리얼 & NYSE 외관 & 황소상', desc:'전부 숙소 도보권. 뉴욕증권거래소는 내부 투어 불가 — 컬럼 파사드 앞 인증샷! 월드컵 기간 보안구역이라 체크포인트 있을 수 있음.', map:'New York Stock Exchange Wall Street', img:'뉴욕 증권거래소', tags:['도보권','포토스팟']},
+      {t:'18:00', title:'브루클린브리지 도보 횡단', desc:'맨해튼 진입로가 숙소 근처. 걸어서 40분, 해질녘 타이밍이 최고.', map:'Brooklyn Bridge', img:'브루클린 브릿지', tags:['필수','석양']},
+      {t:'19:30', title:'DUMBO 석양 + 저녁', desc:'맨해튼브리지 프레임 샷 명소. Juliana\'s 피자 or Time Out Market 옥상.', map:'DUMBO Brooklyn', img:'덤보 브루클린', tags:['야경','피자']}
+    ],
+    meals:[
+      {l:'아침', b:'델리 베이글+커피 ($6) / Financier Patisserie ($10)'},
+      {l:'점심', b:'Adrienne\'s Pizzabar 스톤스트리트 ($18) / 푸드트럭 팔라펠 ($12)'},
+      {l:'저녁', b:'Juliana\'s Pizza 덤보 ($20) / Time Out Market 푸드홀 ($15~25)'}
+    ]
+  },
+  {
+    id:'d2', d:'D2', w:'7/17 금',
+    title:'미드타운 랜드마크 데이', date:'7/17 (금)',
+    note:'MoMA 금요 무료(16시~)가 요일 고정이라 이날은 미드타운 몰빵. 전망대는 <b>엠파이어스테이트 하나만</b> — 하루 2개는 줄서기 낭비라 뺐어.',
+    stops:[
+      {t:'09:30', title:'그랜드센트럴 터미널', desc:'천장 별자리 벽화가 있는 뉴욕 대표 기차역. 지하 푸드코트도 볼거리.', map:'Grand Central Terminal', img:'그랜드 센트럴 터미널', tags:['필수','건축']},
+      {t:'11:00', title:'엠파이어스테이트 빌딩', desc:'86층 전망대. CityPASS의 AM/PM 티켓이라 밤에 한 번 더 무료 재입장 가능! 시간대 예약 필수.', map:'Empire State Building', img:'엠파이어 스테이트 빌딩', tags:['CityPASS','전망대','예약']},
+      {t:'13:00', title:'The Halal Guys 점심', desc:'53rd&6th 본점, 치킨오버라이스 $12. 뉴욕 푸드트럭의 전설.', map:'The Halal Guys 53rd Street', img:'할랄가이즈 뉴욕', tags:['점심','$12']},
+      {t:'14:30', title:'5번가 & 브라이언트파크', desc:'명품 플래그십 윈도쇼핑 → 도서관 뒤 잔디밭에서 커피 한 잔 쉬어가기.', map:'Bryant Park', img:'브라이언트 파크', tags:['산책']},
+      {t:'15:30', title:'MoMA 금요 무료입장 줄서기', desc:'16시 오픈인데 줄이 밖까지 늘어서니 30분 전엔 도착. 고흐 별이 빛나는 밤, 피카소 다 있음.', map:'Museum of Modern Art', img:'뉴욕 현대미술관 모마', tags:['무료','금요한정']},
+      {t:'19:00', title:'타임스퀘어 & 뮤지컬', desc:'전광판 바다는 밤이 제맛. TodayTix 로터리 당첨되면 브로드웨이 $30~50에 관람 🎭', map:'Times Square', img:'타임스퀘어 뉴욕', tags:['필수','야경','로터리']}
+    ],
+    meals:[
+      {l:'아침', b:'길거리 베이글카트 ($5) / Levain Bakery 쿠키+커피 ($8)'},
+      {l:'점심', b:'The Halal Guys ($12) / Num Pang 샌드위치 ($15)'},
+      {l:'저녁', b:'K-타운 BCD ($20) / Ellen\'s Stardust Diner 노래하는 다이너 ($25)'}
+    ]
+  },
+  {
+    id:'d3', d:'D3', w:'7/18 토',
+    title:'센파 · 공룡 · 코니아일랜드', date:'7/18 (토)',
+    note:'낮엔 어퍼웨스트(자전거+박물관), 밤엔 브루클린 남단 놀이공원. <b>자전거는 30~40분만</b> — 박물관에 시간을 더 주는 게 남는 장사.',
+    stops:[
+      {t:'09:30', title:'센트럴파크 시티바이크', desc:'데이패스(~$22)로 파크 남측 라이딩 30~40분. 30분마다 재도킹하면 추가요금 없음 🚲', map:'Central Park', img:'센트럴파크 자전거', tags:['시티바이크','짧게']},
+      {t:'10:30', title:'미국 자연사박물관', desc:'공룡관(T-rex!), 대왕고래, 하이든 플라네타리움. <박물관이 살아있다> 그 박물관. 여유있게 1.5~2시간.', map:'American Museum of Natural History', img:'뉴욕 자연사박물관 공룡', tags:['CityPASS','공룡','필수']},
+      {t:'13:00', title:'점심 후 코니아일랜드로 이동', desc:'지하철 D/F/N/Q, 약 1시간. 이동하면서 낮잠 보충 ㅋㅋ', map:'Coney Island', img:'코니아일랜드', tags:['이동 1시간']},
+      {t:'15:00', title:'보드워크 + 해변', desc:'대서양 바다+보드워크 산책. 수영하고 싶으면 수영복 챙기기!', map:'Coney Island Beach Boardwalk', img:'코니아일랜드 해변', tags:['해변','산책']},
+      {t:'17:30', title:'Nathan\'s Famous 오리지널', desc:'1916년부터 그 자리에 있는 핫도그 성지. 핫도그 먹기 대회 열리는 곳이 여기.', map:'Nathans Famous Coney Island', img:'네이선스 핫도그 코니아일랜드', tags:['핫도그','성지']},
+      {t:'19:00', title:'루나파크 — 사이클론 & 야간 조명', desc:'1927년산 전설의 목조 롤러코스터 사이클론 + 원더휠. 노을 지고 조명 켜지면 그때가 진짜 하이라이트 🎡', map:'Luna Park Coney Island', img:'루나파크 사이클론 롤러코스터', tags:['롤러코스터','야간명당']}
+    ],
+    meals:[
+      {l:'아침', b:'Absolute Bagels ($8) / 홀푸드 그랩앤고 ($10)'},
+      {l:'점심', b:'센파 핫도그카트+프레첼 ($8) / 홀푸드 샌드위치 ($12)'},
+      {l:'저녁', b:'Nathan\'s Famous ($10) / Paul\'s Daughter 씨푸드 ($15)'}
+    ]
+  },
+  {
+    id:'d4', d:'D4', w:'7/19 일',
+    title:'🏆 월드컵 결승', date:'7/19 (일) — 일생일대의 날',
+    note:'결승 당일은 슈퍼볼급 통제+인파. <b>오전 8~9시 록펠러 도착</b>으로 명당 선점. 한여름 야외 6시간 대기니까 물·선크림·모자 필수!',
+    stops:[
+      {t:'08:30', title:'록펠러센터 팬빌리지 도착', desc:'무료·등록불필요 오픈 관람존. 일찍 갈수록 명당. 교대로 화장실/음식 다녀오기 작전 ㄱ', map:'Rockefeller Center', img:'록펠러 센터', tags:['무료','자리선점','8~9시 도착']},
+      {t:'12:00', title:'조각피자로 점심 해결', desc:'근처 $1.50~3 조각피자로 간단히. 자리 지키면서 교대로.', map:'Joes Pizza Rockefeller', img:'뉴욕 조각피자', tags:['점심','$3']},
+      {t:'15:00', title:'FIFA 월드컵 결승 킥오프', desc:'메트라이프 스타디움 결승을 맨해튼 한복판에서 단체관람. 하프타임쇼: 마돈나·샤키라·BTS 🤯', map:'MetLife Stadium', img:'월드컵 메트라이프 스타디움', tags:['월드컵','결승','하프타임쇼']},
+      {t:'18:00', title:'우승 축제 속으로', desc:'경기 끝나면 도시 전체가 축제장. 타임스퀘어~미드타운 배회하면서 그 순간을 즐기기. 오늘은 계획 없는 게 계획.', map:'Times Square', img:'타임스퀘어 축제 인파', tags:['축제','즉흥']}
+    ],
+    meals:[
+      {l:'아침', b:'근처 카페 페이스트리 ($8) / 간단히'},
+      {l:'점심', b:'조각피자 ($3~5) / 할랄 푸드트럭 ($10)'},
+      {l:'저녁', b:'스포츠바 윙+맥주 ($20) / 축제 분위기 따라 즉흥'}
+    ]
+  },
+  {
+    id:'d5', d:'D5', w:'7/20 월',
+    title:'🌊 나이아가라 폭포', date:'7/20 (월) — 당일치기 원정',
+    note:'새벽 기상 빡세지만 결승이 오후 3시라 전날 무리 없이 복귀 가능. 비행 이동 중 부족한 잠 보충! <b>여권 소지 필수.</b>',
+    stops:[
+      {t:'05:30', title:'숙소 출발 → 공항', desc:'JFK or 라과디아. 투어 상품 안내에 따라 이동.', map:'LaGuardia Airport', img:'라과디아 공항', tags:['새벽출발']},
+      {t:'07:30', title:'버팔로행 비행 (~1시간)', desc:'기내에서 꿀잠 타임 😴 버팔로 공항에서 폭포까지 차로 25분.', map:'Buffalo Niagara International Airport', img:'버팔로 나이아가라 공항', tags:['비행 1시간']},
+      {t:'09:30', title:'나이아가라 폭포 도착', desc:'미국 쪽 전망대+주립공원. 물보라가 여기까지 튐. 우비는 보트투어에서 줌.', map:'Niagara Falls State Park', img:'나이아가라 폭포', tags:['필수','대자연']},
+      {t:'11:00', title:'Maid of the Mist 보트투어', desc:'폭포 바로 아래까지 들어가는 전설의 보트. 쫄딱 젖을 각오 = 최고의 경험 🌊', map:'Maid of the Mist Niagara', img:'나이아가라 보트투어', tags:['보트','하이라이트']},
+      {t:'13:00', title:'폭포뷰 점심 + 자유시간', desc:'Top of the Falls 레스토랑(폭포뷰) or 캐주얼 다이너. 이후 전망 포인트 돌기.', map:'Top of the Falls Restaurant', img:'나이아가라 폭포 전망', tags:['점심','폭포뷰']},
+      {t:'17:00', title:'버팔로 공항 → 뉴욕 귀환', desc:'저녁 비행으로 복귀, 밤 9~10시경 숙소 도착. 내일은 야구니까 푹 자기!', map:'Buffalo Niagara International Airport', img:'나이아가라 폭포 야경', tags:['귀환']}
+    ],
+    meals:[
+      {l:'아침', b:'공항 커피+샌드위치 ($10) / 스낵 ($5)'},
+      {l:'점심', b:'Top of the Falls 폭포뷰 ($20) / 캐주얼 다이너 ($12)'},
+      {l:'저녁', b:'버팔로공항 간단히 ($12) / 귀환 후 숙소 근처 야식 ($15~20)'}
+    ]
+  },
+  {
+    id:'d6', d:'D6', w:'7/21 화',
+    title:'Met · 할렘 · ⚾ 양키스', date:'7/21 (화)',
+    note:'Met(어퍼이스트)→할렘(125th)→양키스타디움(브롱크스), <b>전부 북쪽 한 방향</b>이라 이동 낭비 제로. Met은 랜드마크 체크 1시간 컷.',
+    stops:[
+      {t:'10:30', title:'메트로폴리탄 미술관 (1시간 컷)', desc:'세계 3대 박물관. 이집트관(덴두르 신전)+그리스로마+옥상만 찍고 나오는 하이라이트 코스. 계단 인증샷은 필수.', map:'The Metropolitan Museum of Art', img:'메트로폴리탄 미술관', tags:['1시간','랜드마크']},
+      {t:'12:30', title:'할렘 125번가 & 아폴로시어터', desc:'흑인문화의 성지. 아폴로시어터 앞 인증 + Sylvia\'s에서 소울푸드 점심 🍗', map:'Apollo Theater Harlem', img:'아폴로 시어터 할렘', tags:['소울푸드','문화']},
+      {t:'15:00', title:'할렘 거리 여유 + 카페', desc:'스트리트 감성 그 자체. 여유 시간이라 그날 기분 따라 자유롭게.', map:'125th Street Harlem', img:'할렘 뉴욕 거리', tags:['여유','즉흥']},
+      {t:'17:30', title:'4호선 타고 양키스타디움', desc:'161 St역 하차. 경기 전 굿즈샵 들러서 양키스 캡 사기 🧢', map:'Yankee Stadium', img:'양키스타디움', tags:['4호선','굿즈']},
+      {t:'19:05', title:'양키스 vs 파이리츠 직관', desc:'평일 경기라 $28대부터. 핫도그+맥주 들고 브롱크스 밤야구 — 야구맵 운영자의 성지순례 ⚾', map:'Yankee Stadium', img:'양키스타디움 야간 경기', tags:['직관','19:05','야구맵 성지순례']}
+    ],
+    meals:[
+      {l:'아침', b:'델리 베이글 ($6) / Sant Ambroeus 카페 ($15)'},
+      {l:'점심', b:'Sylvia\'s 할렘 소울푸드 ($20) / Harlem Shake 버거 ($12)'},
+      {l:'저녁', b:'스타디움 핫도그+맥주 ($12) / 스테이크샌드위치 ($15)'}
+    ]
+  },
+  {
+    id:'d7', d:'D7', w:'7/22 수',
+    title:'소호 스트릿웨어 & 아웃', date:'7/22 (수) — 마지막 날',
+    note:'전부 숙소 도보권이라 짐 부담 없이 마무리. <b>체크아웃 후 짐은 호텔 보관 or Bounce 앱</b> — 밤 10시에 찾아서 공항행.',
+    stops:[
+      {t:'10:00', title:'소호 스트릿웨어 투어', desc:'Supreme(Lafayette St) → Chrome Hearts → Stüssy. 도보 10분 안에 다 모여있음. 주철건물 배경 스트릿 샷도 필수 🧥', map:'Supreme Store Soho', img:'슈프림 소호 뉴욕', tags:['Supreme','쇼핑','스트릿']},
+      {t:'13:00', title:'Katz\'s Delicatessen', desc:'1888년부터 이어진 파스트라미 성지. 비싸니까($25+) 둘이 하나 시켜서 나눠먹기 작전.', map:'Katzs Delicatessen', img:'캐츠 델리 파스트라미', tags:['성지','나눠먹기']},
+      {t:'14:30', title:'Carmine Street Guitars', desc:'그리니치빌리지의 수제 기타 공방. 뉴욕 옛 건물 목재로 기타를 만드는 전설의 가게 🎸', map:'Carmine Street Guitars', img:'카마인 스트리트 기타', tags:['기타','성지']},
+      {t:'16:00', title:'차이나타운 마무리 산책', desc:'리틀이탈리아까지 이어 걷기. 마지막 기념품/간식 쇼핑.', map:'Chinatown Manhattan', img:'차이나타운 뉴욕', tags:['산책','기념품']},
+      {t:'19:00', title:'저녁 → 짐 찾고 공항행', desc:'일찍 저녁 먹고 호텔에서 짐 픽업 → 22시 JFK 출발 (새벽 2시 비행) ✈️', map:'JFK Airport', img:'뉴욕 야경 스카이라인', tags:['22시 출발','귀국']}
+    ],
+    meals:[
+      {l:'아침', b:'동네 카페 페이스트리 ($7) / Dominique Ansel 크로넛 ($10)'},
+      {l:'점심', b:'Katz\'s 파스트라미 나눠먹기 ($25÷2) / Nom Wah 딤섬 ($15)'},
+      {l:'저녁', b:'Xi\'an Famous Foods 누들 ($12) / 공항 가는 길 샌드위치 ($8)'}
+    ]
+  }
+];
+
+const INFO = `
+  <div class="icard">
+    <h3>🎫 예약 체크리스트</h3>
+    <ul>
+      <li><b>CityPASS ($164)</b> — <a href="https://www.citypass.com/new-york" target="_blank">citypass.com/new-york</a><br>엠파이어스테이트+자연사박물관 고정, 선택3에 자유의여신상 페리 포함시키기. 페리는 앱에서 시간대 예약 필수!</li>
+      <li><b>양키스 7/21 ($28~)</b> — <a href="https://seatgeek.com/new-york-yankees-tickets" target="_blank">SeatGeek</a> / <a href="https://www.mlb.com/yankees/tickets" target="_blank">공식</a></li>
+      <li><b>나이아가라 7/20 투어</b> — <a href="https://www.viator.com" target="_blank">Viator</a>에서 "Niagara day trip by air" 검색 (환불정책 확인!)</li>
+      <li><b>TodayTix</b> — 뮤지컬 당일 로터리 앱, 미리 설치+로그인</li>
+      <li><b>Citi Bike</b> — <a href="https://citibikenyc.com" target="_blank">앱 설치</a>, D3 당일 데이패스 (~$22)</li>
+    </ul>
+  </div>
+  <div class="icard">
+    <h3>💰 예상 비용 (현지 지출)</h3>
+    <table class="btable">
+      <tr><td>CityPASS</td><td>약 23만원</td></tr>
+      <tr><td>7일 지하철 무제한권</td><td>약 5만원</td></tr>
+      <tr><td>양키스 티켓 (화요일)</td><td>약 4만원</td></tr>
+      <tr><td>Citi Bike 데이패스</td><td>약 3만원</td></tr>
+      <tr><td>브로드웨이 로터리</td><td>약 5만원</td></tr>
+      <tr><td>나이아가라 (항공+투어)</td><td>약 40~55만원</td></tr>
+      <tr><td>식비 (9만원 × 8일)</td><td>약 72만원</td></tr>
+      <tr><td>쇼핑 (소호 등)</td><td>15만원</td></tr>
+      <tr><td>예비비</td><td>5만원</td></tr>
+      <tr class="tt"><td>합계</td><td>약 172~187만원</td></tr>
+    </table>
+  </div>
+  <div class="icard">
+    <h3>🧳 필수 준비물</h3>
+    <ul>
+      <li>트래블월렛/트래블로그 충전 · eSIM · 110V 어댑터</li>
+      <li>선크림+모자 (특히 7/19 결승날 야외 6시간)</li>
+      <li>편한 운동화 · 소액 현금 $100~150</li>
+      <li>ESTA 캡처 · 여권 사본 · 호텔 확인증 저장</li>
+      <li>7/20 나이아가라 — 여권 실물 지참!</li>
+    </ul>
+  </div>
+  <div class="icard">
+    <h3>🚇 교통 꿀팁</h3>
+    <ul>
+      <li>OMNY: 그냥 트래블월렛 카드 탭하면 됨, 주 $34 넘으면 자동 무제한</li>
+      <li>숙소(FiDi) 기준 — 미드타운 4/5 급행 20분 · 브루클린 J/Z 15분 · 양키스타디움 4호선 직행</li>
+      <li>7/19 결승날은 지하철 대혼잡 예상 — 시간 여유 2배로</li>
+    </ul>
+  </div>
+`;
+
+const nav = document.getElementById('daynav');
+const panels = document.getElementById('panels');
+const mapUrl = q => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+
+DAYS.forEach((day, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'dn-btn' + (i===1 ? ' active' : '');
+  btn.dataset.target = day.id;
+  btn.innerHTML = `<div class="d">${day.d}</div><div class="w">${day.w}</div>`;
+  btn.onclick = () => show(day.id);
+  nav.appendChild(btn);
+
+  const p = document.createElement('section');
+  p.className = 'panel' + (i===1 ? ' active' : '');
+  p.id = day.id;
+
+  const stopsHtml = day.stops.map(s => `
+    <article class="stop">
+      <div class="strip" data-q="${s.img}">
+        <div class="slot"><img alt=""></div>
+        <div class="slot"><img alt=""></div>
+        <div class="slot"><img alt=""></div>
+      </div>
+      <div class="stop-body">
+        <div class="stop-head">
+          <span class="t-chip${s.hot?' hot':''}">${s.t}</span>
+          <span class="stop-title">${s.title}</span>
+        </div>
+        <p class="stop-desc">${s.desc}</p>
+        <div class="stop-foot">
+          <div class="tags">${(s.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+          <a class="maplink" href="${mapUrl(s.map)}" target="_blank">지도 →</a>
+        </div>
+      </div>
+    </article>
+  `).join('');
+
+  const mealsHtml = day.meals ? `
+    <div class="meals">
+      <h4>TODAY'S EATS</h4>
+      ${day.meals.map(m=>`<div class="meal"><div class="m-l">${m.l}</div><div class="m-b">${m.b}</div></div>`).join('')}
+    </div>` : '';
+
+  p.innerHTML = `
+    <div class="day-banner"><span class="big">${day.title}</span></div>
+    <div class="day-banner"><span class="date">${day.date}</span></div>
+    <p class="day-note">${day.note}</p>
+    ${stopsHtml}
+    ${mealsHtml}
+  `;
+  panels.appendChild(p);
+});
+
+// INFO tab
+const ib = document.createElement('button');
+ib.className = 'dn-btn';
+ib.dataset.target = 'info';
+ib.innerHTML = `<div class="d">INFO</div><div class="w">예약·예산</div>`;
+ib.onclick = () => show('info');
+nav.appendChild(ib);
+
+const ip = document.createElement('section');
+ip.className = 'panel';
+ip.id = 'info';
+ip.innerHTML = INFO;
+panels.appendChild(ip);
+
+// ── image loading (3 per strip) ──
+const cache = {};
+function pickUrls(data){
+  const arr = Array.isArray(data) ? data
+    : data.images || data.urls || data.results || data.items || [];
+  return arr.map(x => typeof x === 'string' ? x : (x.url || x.link || x.thumbnail)).filter(Boolean);
+}
+async function loadImages(panelId){
+  const panel = document.getElementById(panelId);
+  if(!panel) return;
+  panel.querySelectorAll('.strip:not([data-done])').forEach(async strip => {
+    strip.setAttribute('data-done','1');
+    const q = strip.dataset.q;
+    const imgs = strip.querySelectorAll('img');
+    try{
+      let urls = cache[q];
+      if(!urls){
+        const r = await fetch('https://seoul-random-date.vercel.app/api/images?query=' + encodeURIComponent(q));
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        urls = pickUrls(await r.json());
+        cache[q] = urls;
+      }
+      imgs.forEach((im,i)=>{
+        if(urls[i]){
+          im.src = urls[i];
+          im.onload = ()=> im.classList.add('on');
+          im.onerror = ()=>{ im.style.display='none'; };
+        }
+      });
+      if(!urls.length) strip.style.display='none';
+    }catch(e){
+      console.warn('img fail:', q, e);
+      strip.style.display='none';
+    }
+  });
+}
+
+function show(id){
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.dn-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector(`.dn-btn[data-target="${id}"]`).classList.add('active');
+  loadImages(id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+loadImages('d1');
+</script>
+</body>
+</html>
